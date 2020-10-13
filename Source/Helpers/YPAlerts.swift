@@ -18,9 +18,9 @@ struct YPAlert {
         if let popoverController = alert.popoverPresentationController {
             popoverController.sourceView = sourceView
             popoverController.sourceRect = CGRect(x: sourceView.bounds.midX,
-												  y: sourceView.bounds.midY,
-												  width: 0,
-												  height: 0)
+                                                  y: sourceView.bounds.midY,
+                                                  width: 0,
+                                                  height: 0)
             popoverController.permittedArrowDirections = []
         }
         alert.addAction(UIAlertAction(title: YPConfig.wordings.ok, style: UIAlertAction.Style.default, handler: nil))
@@ -36,9 +36,27 @@ struct YPAlert {
         if let popoverController = alert.popoverPresentationController {
             popoverController.sourceView = sourceView
             popoverController.sourceRect = CGRect(x: sourceView.bounds.midX,
-												  y: sourceView.bounds.midY,
-												  width: 0,
-												  height: 0)
+                                                  y: sourceView.bounds.midY,
+                                                  width: 0,
+                                                  height: 0)
+            popoverController.permittedArrowDirections = []
+        }
+        alert.addAction(UIAlertAction(title: YPConfig.wordings.ok, style: UIAlertAction.Style.default, handler: nil))
+        return alert
+    }
+    
+    static func assetTooBigAlert(_ sourceView: UIView) -> UIAlertController {
+        let msg = String(format: YPConfig.wordings.assetSizePopup.message,
+                         "\(YPConfig.library.librarySizeLimit / 1000000)")
+        let alert = UIAlertController(title: YPConfig.wordings.assetSizePopup.title,
+                                      message: msg,
+                                      preferredStyle: .actionSheet)
+        if let popoverController = alert.popoverPresentationController {
+            popoverController.sourceView = sourceView
+            popoverController.sourceRect = CGRect(x: sourceView.bounds.midX,
+                                                  y: sourceView.bounds.midY,
+                                                  width: 0,
+                                                  height: 0)
             popoverController.permittedArrowDirections = []
         }
         alert.addAction(UIAlertAction(title: YPConfig.wordings.ok, style: UIAlertAction.Style.default, handler: nil))

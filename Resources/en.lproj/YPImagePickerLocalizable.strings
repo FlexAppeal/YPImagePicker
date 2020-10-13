@@ -20,3 +20,5 @@
 "YPImagePickerVideoTooLong" = "Pick a video less than %@ seconds long";
 "YPImagePickerVideoTooShort" = "The video must be at least %@ seconds";
 "YPImagePickerWarningItemsLimit" = "The limit is %d photos or videos";
+"YPImagePickerAssetSizeTitle" = "Item file size limit";
+"YPImagePickerAssetSizeMessage" = "An item can be a maximum of %@MB, please pick a smaller item";

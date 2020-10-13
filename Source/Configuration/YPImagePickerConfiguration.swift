@@ -20,11 +20,11 @@ public struct YPImagePickerConfiguration {
     public static var widthOniPad: CGFloat = -1
     
     public static var screenWidth: CGFloat {
-		var screenWidth: CGFloat = UIScreen.main.bounds.width
-		if UIDevice.current.userInterfaceIdiom == .pad && YPImagePickerConfiguration.widthOniPad > 0 {
-			screenWidth =  YPImagePickerConfiguration.widthOniPad
-		}
-		return screenWidth
+        var screenWidth: CGFloat = UIScreen.main.bounds.width
+        if UIDevice.current.userInterfaceIdiom == .pad && YPImagePickerConfiguration.widthOniPad > 0 {
+            screenWidth =  YPImagePickerConfiguration.widthOniPad
+        }
+        return screenWidth
     }
     
     public init() {}
@@ -91,8 +91,8 @@ public struct YPImagePickerConfiguration {
     /// Adds a Overlay View to the camera
     public var overlayView: UIView?
 
-	/// Defines if the navigation bar cancel button should be hidden when showing the picker. Default is false
-	public var hidesCancelButton = false
+    /// Defines if the navigation bar cancel button should be hidden when showing the picker. Default is false
+    public var hidesCancelButton = false
     
     /// Defines if the status bar should be hidden when showing the picker. Default is true
     public var hidesStatusBar = true
@@ -187,7 +187,7 @@ public struct YPConfigLibrary {
     /// Sets the cropping style to square or not. Ignored if `onlySquare` is true. Defaults to true.
     public var isSquareByDefault = true
     
-	/// Minimum width, to prevent selectiong too high images. Have sense if onlySquare is true and the image is portrait.
+    /// Minimum width, to prevent selectiong too high images. Have sense if onlySquare is true and the image is portrait.
     public var minWidthForItem: CGFloat?
     
     /// Choose what media types are available in the library. Defaults to `.photo`
@@ -220,6 +220,10 @@ public struct YPConfigLibrary {
     
     /// Set the overlay type shown on top of the selected library item
     public var itemOverlayType: YPItemOverlayType = .grid
+    
+    /// Define the size limit for items from the library in bytes
+    /// Defaults to 500MB
+    public var librarySizeLimit: Int64 = 500000000
 }
 
 /// Encapsulates video specific settings.
@@ -262,11 +266,11 @@ public struct YPConfigVideo {
     /// The handles won't pan further if the minimum duration is attained.
     public var trimmerMinDuration: Double = 3.0
 
-	/// Defines if the user skips the trimer stage,
-	/// the video will be trimmed automatically to the maximum value of trimmerMaxDuration.
-	/// This case occurs when the user already has a video selected and enables a
-	/// multiselection to pick more than one type of media (video or image),
-	/// so, the trimmer step becomes optional.
+    /// Defines if the user skips the trimer stage,
+    /// the video will be trimmed automatically to the maximum value of trimmerMaxDuration.
+    /// This case occurs when the user already has a video selected and enables a
+    /// multiselection to pick more than one type of media (video or image),
+    /// so, the trimmer step becomes optional.
     /// - SeeAlso: [trimmerMaxDuration](x-source-tag://trimmerMaxDuration)
     public var automaticTrimToTrimmerMaxDuration: Bool = false
 }
