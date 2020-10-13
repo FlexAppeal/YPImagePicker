@@ -197,7 +197,12 @@ open class YPPickerVC: YPBottomPager, YPBottomPagerDelegate {
     func navBarTapped() {
         let vc = YPAlbumVC(albumsManager: albumsManager)
         let navVC = UINavigationController(rootViewController: vc)
-        navVC.navigationBar.tintColor = .ypLabel
+        navVC.navigationBar.backgroundColor = navigationController?.navigationBar.backgroundColor
+        navVC.navigationBar.barStyle = navigationController?.navigationBar.barStyle ?? .black
+        navVC.navigationBar.barTintColor = navigationController?.navigationBar.barTintColor
+        navVC.navigationBar.tintColor = navigationController?.navigationBar.tintColor
+        navVC.navigationBar.isTranslucent = navigationController?.navigationBar.isTranslucent ?? false
+        navVC.navigationBar.titleTextAttributes = navigationController?.navigationBar.titleTextAttributes
         
         vc.didSelectAlbum = { [weak self] album in
             self?.libraryVC?.setAlbum(album)
