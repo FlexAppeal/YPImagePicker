@@ -183,11 +183,8 @@ extension YPLibraryVC: UICollectionViewDelegate {
             
         if multipleSelectionEnabled {
             let cellIsInTheSelectionPool = isInSelectionPool(indexPath: indexPath)
-            let cellIsCurrentlySelected = previouslySelectedIndexPath.row == currentlySelectedIndex
             if cellIsInTheSelectionPool {
-                if cellIsCurrentlySelected {
-                    deselect(indexPath: indexPath)
-                }
+                deselect(indexPath: indexPath)
             } else if isLimitExceeded == false && fitsLibrarySizeLimits(asset: mediaManager.fetchResult[indexPath.row]) == true {
                 addToSelection(indexPath: indexPath)
             }
