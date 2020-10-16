@@ -169,25 +169,20 @@ extension YPLibraryVC: UICollectionViewDelegate {
     }
     
     public func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        var didDeselect = false
         let previouslySelectedIndexPath = IndexPath(row: currentlySelectedIndex, section: 0)
         currentlySelectedIndex = indexPath.row
-
-        changeAsset(mediaManager.fetchResult[indexPath.row])
-        panGestureHelper.resetToOriginalState()
-        
-        // Only scroll cell to top if preview is hidden.
-        if !panGestureHelper.isImageShown {
-            collectionView.scrollToItem(at: indexPath, at: .top, animated: true)
-        }
-        v.refreshImageCurtainAlpha()
             
         if multipleSelectionEnabled {
             let cellIsInTheSelectionPool = isInSelectionPool(indexPath: indexPath)
             if cellIsInTheSelectionPool {
                 deselect(indexPath: indexPath)
+                currentlySelectedIndex = previouslySelectedIndexPath.row
+                didDeselect = true
             } else if isLimitExceeded == false && fitsLibrarySizeLimits(asset: mediaManager.fetchResult[indexPath.row]) == true {
                 addToSelection(indexPath: indexPath)
             }
+            
             collectionView.reloadItems(at: [indexPath])
             collectionView.reloadItems(at: [previouslySelectedIndexPath])
         } else {
@@ -201,6 +196,17 @@ extension YPLibraryVC: UICollectionViewDelegate {
             if let previousCell = collectionView.cellForItem(at: previouslySelectedIndexPath) as? YPLibraryViewCell {
                 previousCell.isSelected = false
             }
+        }
+        
+        if !didDeselect {
+            changeAsset(mediaManager.fetchResult[indexPath.row])
+            panGestureHelper.resetToOriginalState()
+            
+            // Only scroll cell to top if preview is hidden.
+            if !panGestureHelper.isImageShown {
+                collectionView.scrollToItem(at: indexPath, at: .top, animated: true)
+            }
+            v.refreshImageCurtainAlpha()
         }
     }
     
