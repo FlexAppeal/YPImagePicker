@@ -55,11 +55,11 @@ public class YPVideoFiltersVC: UIViewController, IsMediaFilterVC {
         
         coverThumbSelectorView.thumbBorderColor = YPConfig.colors.coverSelectorBorderColor
         
-        trimBottomItem.textLabel.text = YPConfig.wordings.trim
-        coverBottomItem.textLabel.text = YPConfig.wordings.cover
-
-        trimBottomItem.button.addTarget(self, action: #selector(selectTrim), for: .touchUpInside)
-        coverBottomItem.button.addTarget(self, action: #selector(selectCover), for: .touchUpInside)
+//        trimBottomItem.textLabel.text = YPConfig.wordings.trim
+//        coverBottomItem.textLabel.text = YPConfig.wordings.cover
+//
+//        trimBottomItem.button.addTarget(self, action: #selector(selectTrim), for: .touchUpInside)
+//        coverBottomItem.button.addTarget(self, action: #selector(selectCover), for: .touchUpInside)
         
         // Remove the default and add a notification to repeat playback from the start
         videoView.removeReachEndObserver()
