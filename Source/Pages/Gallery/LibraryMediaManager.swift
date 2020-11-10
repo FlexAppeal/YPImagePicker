@@ -118,6 +118,7 @@ class LibraryMediaManager {
                 // Layer Instructions
                 let layerInstructions = AVMutableVideoCompositionLayerInstruction(assetTrack: videoCompositionTrack)
                 var transform = videoTrack.preferredTransform
+                videoCompositionTrack.preferredTransform = transform
                 let videoSize = videoTrack.naturalSize.applying(transform)
                 transform.tx = (videoSize.width < 0) ? abs(videoSize.width) : 0.0
                 transform.ty = (videoSize.height < 0) ? abs(videoSize.height) : 0.0
