@@ -58,7 +58,7 @@ extension YPLibraryVC {
     func deselect(indexPath: IndexPath) {
         if let positionIndex = selectedItems.firstIndex(where: {
             $0.assetIdentifier == mediaManager.getAsset(at: indexPath.row)?.localIdentifier
-		}) {
+        }) {
             selectedItems.remove(at: positionIndex)
             // Refresh the numbers
             let selectedIndexPaths = selectedItems.map { IndexPath(row: $0.index, section: 0) }
@@ -95,7 +95,7 @@ extension YPLibraryVC {
     func isInSelectionPool(indexPath: IndexPath) -> Bool {
         return selectedItems.contains(where: {
             $0.assetIdentifier == mediaManager.getAsset(at: indexPath.row)?.localIdentifier
-		})
+        })
     }
     
     /// Checks if there can be selected more items. If no - present warning.
@@ -183,7 +183,7 @@ extension YPLibraryVC: UICollectionViewDelegate {
                 deselect(indexPath: indexPath)
                 currentlySelectedIndex = previouslySelectedIndexPath.row
                 didDeselect = true
-            } else if isLimitExceeded == false && fitsLibrarySizeLimits(asset: mediaManager.fetchResult[indexPath.row]) == true {
+            } else if isLimitExceeded == false, let asset = mediaManager.getAsset(at: indexPath.row), fitsLibrarySizeLimits(asset: asset) == true {
                 addToSelection(indexPath: indexPath)
             }
             
@@ -203,7 +203,7 @@ extension YPLibraryVC: UICollectionViewDelegate {
         }
         
         if !didDeselect {
-            changeAsset(mediaManager.fetchResult[indexPath.row])
+            changeAsset(mediaManager.getAsset(at: indexPath.row))
             panGestureHelper.resetToOriginalState()
             
             // Only scroll cell to top if preview is hidden.

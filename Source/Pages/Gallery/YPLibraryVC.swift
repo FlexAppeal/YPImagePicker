@@ -54,9 +54,9 @@ internal final class YPLibraryVC: UIViewController, YPPermissionCheckable {
         registerForTapOnPreview()
         refreshMediaRequest()
 
-        v.assetViewContainer.multipleSelectionButton.isHidden = !(YPConfig.library.maxNumberOfItems > 1)
+        v.assetViewContainer.multipleSelectionButton.isHidden = !(YPConfig.library.maxNumberOfItems > 1) || YPConfig.library.defaultMultipleSelection
         v.maxNumberWarningLabel.text = String(format: YPConfig.wordings.warningMaxItemsLimit,
-											  YPConfig.library.maxNumberOfItems)
+                                              YPConfig.library.maxNumberOfItems)
         
         if let preselectedItems = YPConfig.library.preselectedItems,
            !preselectedItems.isEmpty {
@@ -300,7 +300,7 @@ internal final class YPLibraryVC: UIViewController, YPPermissionCheckable {
         let updateCropInfo = {
             self.updateCropInfo()
         }
-		
+        
         // MARK: add a func(updateCropInfo) after crop multiple
         DispatchQueue.global(qos: .userInitiated).async {
             switch asset.mediaType {
@@ -339,6 +339,25 @@ internal final class YPLibraryVC: UIViewController, YPPermissionCheckable {
                 let alert = tooLong ? YPAlert.videoTooLongAlert(self.view) : YPAlert.videoTooShortAlert(self.view)
                 self.present(alert, animated: true, completion: nil)
             }
+            return false
+        }
+        
+        return true
+    }
+    
+    func fitsLibrarySizeLimits(asset: PHAsset) -> Bool {
+        let maxSizeInBytes = YPConfig.library.librarySizeLimit
+        let resources = PHAssetResource.assetResources(for: asset)
+        guard let resource = resources.first, let fileSizePattern = resource.value(forKey: "fileSize") as? CLong else { return true }
+        let sizeOnDisk = Int64(bitPattern: UInt64(fileSizePattern))
+        let tooBig = sizeOnDisk > maxSizeInBytes
+        
+        if tooBig {
+            DispatchQueue.main.async {
+                let alert = YPAlert.assetTooBigAlert(self.view)
+                self.present(alert, animated: true, completion: nil)
+            }
+            
             return false
         }
         
@@ -473,7 +492,7 @@ internal final class YPLibraryVC: UIViewController, YPPermissionCheckable {
                     case .image:
                         self.fetchImageAndCrop(for: asset.asset, withCropRect: asset.cropRect) { image, exifMeta in
                             let photo = YPMediaPhoto(image: image.resizedImageIfNeeded(),
-													 exifMeta: exifMeta, asset: asset.asset)
+                                                     exifMeta: exifMeta, asset: asset.asset)
                             resultMediaItems.append(YPMediaItem.photo(p: photo))
                             asyncGroup.leave()
                         }
