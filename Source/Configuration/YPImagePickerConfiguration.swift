@@ -191,6 +191,10 @@ public struct YPConfigLibrary {
     
     /// Set the overlay type shown on top of the selected library item
     public var itemOverlayType: YPItemOverlayType = .grid
+    
+    /// Define the size limit for items from the library in bytes
+    /// Defaults to 500MB
+    public var librarySizeLimit: Int64 = 500000000
 }
 
 /// Encapsulates video specific settings.

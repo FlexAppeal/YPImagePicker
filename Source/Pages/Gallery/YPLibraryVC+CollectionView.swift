@@ -195,7 +195,7 @@ extension YPLibraryVC: UICollectionViewDelegate {
                 } else {
                     changeAsset(mediaManager.getAsset(at: indexPath.row))
                 }
-            } else if isLimitExceeded == false {
+            } else if isLimitExceeded == false, let asset = mediaManager.getAsset(at: indexPath.row), fitsLibrarySizeLimits(asset: asset) == true {
                 addToSelection(indexPath: indexPath)
                 changeAsset(mediaManager.getAsset(at: indexPath.row))
             }
