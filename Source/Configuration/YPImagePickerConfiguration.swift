@@ -20,11 +20,14 @@ public struct YPImagePickerConfiguration {
     public static var widthOniPad: CGFloat = -1
     
     public static var screenWidth: CGFloat {
-        var screenWidth: CGFloat = UIScreen.main.bounds.width
-        if UIDevice.current.userInterfaceIdiom == .pad && YPImagePickerConfiguration.widthOniPad > 0 {
-            screenWidth =  YPImagePickerConfiguration.widthOniPad
-        }
-        return screenWidth
+        var screenWidth: CGFloat = 0
+        
+        let windowScene = UIApplication.safeFirstWindowScene
+        screenWidth = windowScene?.screen.bounds.width ?? 1.0
+		if UIDevice.current.userInterfaceIdiom == .pad && YPImagePickerConfiguration.widthOniPad > 0 {
+			screenWidth =  YPImagePickerConfiguration.widthOniPad
+		}
+		return screenWidth
     }
 
     /// If don't want to have logs from picker, set it to false.
@@ -118,6 +121,9 @@ public struct YPImagePickerConfiguration {
     /// Defines the max camera zoom factor for camera. Disable camera zoom with 1. Default is 1.
     public var maxCameraZoomFactor: CGFloat = 1.0
     
+    /// Controls the camera shutter sound. If set to true, the camera shutter sound will be disabled. Defaults to false.
+    public var silentMode = false
+    
     /// List of default filters which will be added on the filter screen
     public var filters: [YPFilter] = [
         YPFilter(name: "Normal", applier: nil),
@@ -151,7 +157,7 @@ public struct YPConfigLibrary {
     /// Sets the cropping style to square or not. Ignored if `onlySquare` is true. Defaults to true.
     public var isSquareByDefault = true
     
-    /// Minimum width, to prevent selectiong too high images. Have sense if onlySquare is true and the image is portrait.
+	/// Minimum width, to prevent selectiong too high images. Have sense if onlySquare is true and the image is portrait.
     public var minWidthForItem: CGFloat?
     
     /// Choose what media types are available in the library. Defaults to `.photo`.
@@ -185,10 +191,6 @@ public struct YPConfigLibrary {
     
     /// Set the overlay type shown on top of the selected library item
     public var itemOverlayType: YPItemOverlayType = .grid
-    
-    /// Define the size limit for items from the library in bytes
-    /// Defaults to 500MB
-    public var librarySizeLimit: Int64 = 500000000
 }
 
 /// Encapsulates video specific settings.
@@ -210,6 +212,19 @@ public struct YPConfigVideo {
     
     /// Choose the result video extension if you trim or compress a video. Defaults to mov.
     public var fileType: AVFileType = .mov
+    
+    /// Set this value for the `AVAssetExportSession` property `fileLengthLimit`
+    /// May be useful for exporting video with original format `mp4`
+    ///
+    /// Sometimes `AVAssetExportSession` increase mp4 video bitrate
+    /// so result file might be quite bigger than original from user gallery
+    ///
+    /// Usage example - setting `fileLengthLimit` to `10 MB`:
+    /// ``` swift
+    /// config.video.fileLengthLimit = 1048576 * 10
+    /// ```
+    /// For more information check [this thread](https://stackoverflow.com/questions/50560922/reducing-the-size-of-a-video-exported-with-avassetexportsession-ios-swift)
+    public var fileLengthLimit: Int64?
     
     /// Defines the time limit for recording videos.
     /// Default is 60 seconds.
