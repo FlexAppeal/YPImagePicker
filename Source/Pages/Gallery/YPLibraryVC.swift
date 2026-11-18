@@ -474,6 +474,14 @@ internal final class YPLibraryVC: UIViewController, YPPermissionCheckable {
                 }
                 return (asset, $0.cropRect)
             }
+
+            // Done with nothing selected (the last item was deselected): nothing to return.
+            guard let firstAsset = selectedAssets.first?.asset else {
+                DispatchQueue.main.async {
+                    self.delegate?.libraryViewFinishedLoading()
+                }
+                return
+            }
             
             // Multiple selection
             if self.isMultipleSelectionEnabled && self.selectedItems.count > 1 {
@@ -556,7 +564,7 @@ internal final class YPLibraryVC: UIViewController, YPPermissionCheckable {
                     self.delegate?.libraryViewFinishedLoading()
                 }
             } else {
-                let asset = selectedAssets.first!.asset
+                let asset = firstAsset
                 switch asset.mediaType {
                 case .audio, .unknown:
                     return

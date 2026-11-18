@@ -84,6 +84,12 @@ extension YPLibraryVC {
             }
 			
             checkLimit()
+
+            // Nothing selected any more: refresh the picker so Done is disabled (minNumberOfItems).
+            // No asset loads in this case, so libraryViewFinishedLoading would not run otherwise.
+            if selectedItems.isEmpty {
+                delegate?.libraryViewFinishedLoading()
+            }
         }
     }
     
